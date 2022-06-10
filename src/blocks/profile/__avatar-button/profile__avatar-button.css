@@ -6,7 +6,7 @@
   opacity: 0;
   cursor: pointer;
   background-image: url('../../../images/edit-pen__icon.svg');
-  position: fixed;
+  position: absolute;
 }
 
 .profile__avatar-button:hover {

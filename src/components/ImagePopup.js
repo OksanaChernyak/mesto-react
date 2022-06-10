@@ -1,15 +1,17 @@
-function ImagePopup(props) {
+import React from 'react';
+
+function ImagePopup({card, onClose}) {
     return (
-        <div className={`popup popup_type_image ${props.card && "popup_opened"}`}>
+        <div className={`popup popup_type_image ${card && "popup_opened"}`}>
             <div className="popup__overlay">
-                <img className="popup__pic" alt={props.card ? props.card.name : ''}
-                     src={props.card ? props.card.link : ''}/>
-                <p className="popup__pic-title">{props.card ? props.card.name : ''}</p>
+                <img className="popup__pic" alt={card?.name}
+                     src={card?.link}/>
+                <p className="popup__pic-title">{card?.name}</p>
                 <button
                     className="popup__close-button popup__close-button_type_pic"
                     type="button"
                     aria-label="Закрыть попап"
-                    onClick={props.onClose}
+                    onClick={onClose}
                 ></button>
             </div>
         </div>

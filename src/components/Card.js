@@ -1,20 +1,20 @@
 import React from 'react';
 
-function Card(props) {
+function Card({card, onCardClick}) {
     function handleClick() {
-        props.onCardClick(props.card);
+        onCardClick(card);
     }
 
     return (
         <li className="place">
-            <img className="place__image" alt={props.card.name} src={props.card.link} onClick={handleClick}/>
-            <h2 className="place__title">{props.card.name}</h2>
+            <img className="place__image" alt={card.name} src={card.link} onClick={handleClick}/>
+            <h2 className="place__title">{card.name}</h2>
             <button
                 className="place__like"
                 type="button"
                 aria-label="Поставить лайк"
             ></button>
-            <p className="place__like-counter">{props.card.likes.length}</p>
+            <p className="place__like-counter">{card.likes.length}</p>
             <button
                 className="place__delete"
                 type="button"

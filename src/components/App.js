@@ -11,29 +11,23 @@ import PopupWithForm from "./PopupWithForm";
 export default App;
 
 function App() {
-    const isProfilePopupOpen = false;
-    const isAddPlacePopupOpen = false;
-    const isAvatarPopupOpen = false;
-    let userName;
-    let userDescription;
-    let userAvatar;
+    const [isProfilePopupOpen, setIsProfilePopupOpen] = React.useState(false);
+    const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = React.useState(false);
+    const [isAvatarPopupOpen, setIsAvatarPopupOpen] = React.useState(false);
+    const [userName, setUserName] = React.useState("John Doe");
+    const [userDescription, setUserDescription] = React.useState("Nobody");
+    const [userAvatar, setUserAvatar] = React.useState(`${avatarDefault}`);
     const [selectedCard, setSelectedCard] = React.useState(null);
     const [cards, setCards] = React.useState([]);
-    const [data, setData] = React.useState({
-        userName: "John Doe",
-        userDescription: "Nobody",
-        userAvatar: `${avatarDefault}`
-    });
+
 
     React.useEffect(() => {
         api.getUserData()
             .then((userServerData) => {
-                setData({
-                    userName: userServerData.name,
-                    userDescription: userServerData.about,
-                    userAvatar: userServerData.avatar
-                })
 
+                setUserName(userServerData.name);
+                setUserDescription(userServerData.about);
+                setUserAvatar(userServerData.avatar);
             })
             .catch((err) => {
                 alert(err);
@@ -57,25 +51,21 @@ function App() {
     }
 
     function handleEditAvatarClick() {
-        document.querySelector(".popup_type_avatar-form").classList.add("popup_opened");
-        isAvatarPopupOpen = true;
+        setIsAvatarPopupOpen(true);
     }
 
     function handleEditProfileClick() {
-        document.querySelector(".popup_type_edit-form").classList.add("popup_opened");
-        isProfilePopupOpen = true;
+        setIsProfilePopupOpen(true);
     };
 
     function handleAddPlaceClick() {
-        document.querySelector(".popup_type_add-form").classList.add("popup_opened");
-        isAddPlacePopupOpen = true;
+        setIsAddPlacePopupOpen(true);
     };
 
     function closeAllPopups() {
-        document.querySelector(".popup_opened").classList.remove("popup_opened");
-        isProfilePopupOpen = false;
-        isAddPlacePopupOpen = false;
-        isAvatarPopupOpen = false;
+        setIsProfilePopupOpen(false);
+        setIsAddPlacePopupOpen(false);
+        setIsAvatarPopupOpen(false);
         setSelectedCard(null);
     }
 
@@ -85,42 +75,41 @@ function App() {
                 <Header/>
                 <Main onEditProfile={handleEditProfileClick} onEditAvatar={handleEditAvatarClick}
                       onAddPlace={handleAddPlaceClick} onCardClick={handleCardClick} onClose={closeAllPopups}
-                      data={data} cards={cards} selectedCard={selectedCard}/>
+                      cards={cards} selectedCard={selectedCard} userName={userName} userDescription={userDescription}
+                      userAvatar={userAvatar}/>
                 <Footer/>
 
                 <ImagePopup onClose={closeAllPopups} card={selectedCard}/>
 
                 <PopupWithForm isOpen={isProfilePopupOpen} onClose={closeAllPopups} name="edit-form"
-                               title="Редактировать профиль" children={<fieldset className="popup__fields">
-                    <input
-                        className="popup__field popup__field_type_name"
-                        id="name-input"
-                        type="text"
-                        name="name"
-                        placeholder="Введите имя"
-                        minLength="2"
-                        maxLength="40"
-                        required
-                    />
-                    <span className="error name-input-error"></span>
-                    <input
-                        className="popup__field popup__field_type_description"
-                        id="description-input"
-                        type="text"
-                        name="about"
-                        placeholder="Укажите профессию"
-                        minLength="2"
-                        maxLength="200"
-                        required
-                    />
-                    <span className="error description-input-error"></span>
-                    <button className="popup__save-button" type="submit">
-                        Сохранить
-                    </button>
-                </fieldset>}/>
+                               title="Редактировать профиль" btnText="Сохранить"
+                               children={<fieldset className="popup__fields">
+                                   <input
+                                       className="popup__field popup__field_type_name"
+                                       id="name-input"
+                                       type="text"
+                                       name="name"
+                                       placeholder="Введите имя"
+                                       minLength="2"
+                                       maxLength="40"
+                                       required
+                                   />
+                                   <span className="error name-input-error"></span>
+                                   <input
+                                       className="popup__field popup__field_type_description"
+                                       id="description-input"
+                                       type="text"
+                                       name="about"
+                                       placeholder="Укажите профессию"
+                                       minLength="2"
+                                       maxLength="200"
+                                       required
+                                   />
+                                   <span className="error description-input-error"></span>
+                               </fieldset>}/>
 
                 <PopupWithForm isOpen={isAddPlacePopupOpen} onClose={closeAllPopups} name="add-form"
-                               title="Новое место" children={<fieldset className="popup__fields">
+                               title="Новое место" btnText="Создать" children={<fieldset className="popup__fields">
                     <input
                         className="popup__field popup__field_type_place"
                         id="place-input"
@@ -141,26 +130,23 @@ function App() {
                         required
                     />
                     <span className="error link-input-error"></span>
-                    <button className="popup__save-button" type="submit">Создать</button>
                 </fieldset>}/>
 
-                <PopupWithForm name="delete" title="Вы уверены?" children={
-                    <button className="popup__save-button" type="submit">Да</button>
-                }/>
+                <PopupWithForm name="delete" title="Вы уверены?" btnText="Да"/>
 
                 <PopupWithForm isOpen={isAvatarPopupOpen} onClose={closeAllPopups} name="avatar-form"
-                               title="Обновить аватар" children={<fieldset className="popup__fields">
-                    <input
-                        className="popup__field popup__field_type_avatar"
-                        id="avatar-input"
-                        type="url"
-                        name="avatar"
-                        placeholder="Укажите ссылку на аватар"
-                        required
-                    />
-                    <span className="error avatar-input-error"></span>
-                    <button className="popup__save-button" type="submit">Сохранить</button>
-                </fieldset>}/>
+                               title="Обновить аватар" btnText="Сохранить"
+                               children={<fieldset className="popup__fields">
+                                   <input
+                                       className="popup__field popup__field_type_avatar"
+                                       id="avatar-input"
+                                       type="url"
+                                       name="avatar"
+                                       placeholder="Укажите ссылку на аватар"
+                                       required
+                                   />
+                                   <span className="error avatar-input-error"></span>
+                               </fieldset>}/>
             </div>
         </div>
     );
