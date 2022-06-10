@@ -5,7 +5,7 @@ import Main from './Main';
 import Footer from './Footer';
 import avatarDefault from "../images/profile__pic.png";
 import {api} from "../utils/Api";
-import PopupWithImage from "./PopupWithImage";
+import ImagePopup from "./ImagePopup";
 import PopupWithForm from "./PopupWithForm";
 
 export default App;
@@ -88,7 +88,7 @@ function App() {
                       data={data} cards={cards} selectedCard={selectedCard}/>
                 <Footer/>
 
-                <PopupWithImage onClose={closeAllPopups} card={selectedCard}/>
+                <ImagePopup onClose={closeAllPopups} card={selectedCard}/>
 
                 <PopupWithForm isOpen={isProfilePopupOpen} onClose={closeAllPopups} name="edit-form"
                                title="Редактировать профиль" children={<fieldset className="popup__fields">
