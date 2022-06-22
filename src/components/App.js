@@ -30,18 +30,16 @@ function App() {
             .catch((err) => {
                 alert(err);
             });
-    }, []);
-
-    React.useEffect(() => {
         api.getInitialCards()
-            .then((cardsData) => {
-                    setCards(cardsData);
+            .then((res) => {
+                    setCards(res);
                 }
             )
             .catch((err) => {
                 alert(err);
             });
     }, []);
+
 
     function handleCardLike(card) {
         const isLiked = card.likes.some(i => i._id === currentUser._id);
@@ -50,17 +48,26 @@ function App() {
                 .then((newCard) => {
                     setCards((state) => state.map((c) => c._id === card._id ? newCard : c))
                 })
+                .catch((err) => {
+                    alert(err);
+                });
         } else {
             api.deleteLikeFromCard(card._id)
                 .then((newCard) => {
                     setCards((state) => state.map((c) => c._id === card._id ? newCard : c))
                 })
+                .catch((err) => {
+                    alert(err);
+                });
         }
     }
 
     function handleCardDelete(card) {
         api.deleteCard(card._id)
             .then(() => setCards((state) => state.filter((c) => c._id !== card._id)))
+            .catch((err) => {
+                alert(err);
+            });
     }
 
     function handleCardClick(card) {
@@ -73,6 +80,9 @@ function App() {
                 setCurrentUser(res);
                 closeAllPopups()
             })
+            .catch((err) => {
+                alert(err);
+            });
     }
 
     function handleUpdateAvatar(avatar) {
@@ -82,6 +92,9 @@ function App() {
                     closeAllPopups()
                 }
             )
+            .catch((err) => {
+                alert(err);
+            });
     }
 
     function handleAddPlaceSubmit(name, link) {
@@ -90,6 +103,9 @@ function App() {
                 setCards([res, ...cards])
                 closeAllPopups()
             })
+            .catch((err) => {
+                alert(err);
+            });
     }
 
     function handleEditAvatarClick() {
