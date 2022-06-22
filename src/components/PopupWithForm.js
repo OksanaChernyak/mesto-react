@@ -1,11 +1,12 @@
-import React from 'react';
+import React from "react";
 
-function PopupWithForm({isOpen, name, title, onClose, btnText, children}) {
+function PopupWithForm({isOpen, name, title, onClose, btnText, children, onSubmit}) {
     return (
         <div className={isOpen ? `popup popup_type_${name} popup_opened` : `popup popup_type_${name}`}>
             <form
                 name="{props.name}"
                 className="popup__container"
+                onSubmit={onSubmit}
                 noValidate
             >
                 <button
